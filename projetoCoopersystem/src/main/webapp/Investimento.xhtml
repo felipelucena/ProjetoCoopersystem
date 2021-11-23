@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:h="http://xmlns.jcp.org/jsf/html"
+ xmlns:ui="http://xmlns.jcp.org/jsf/core"
+ xmlns:s="http://java.sun.com/jsf/core"
+ xmlns:f="http://xmlns.jcp.org/jsf/facelets"
+ xmlns:p="http://primefaces.org/ui"
+  xmlns:a4j="http://richfaces.org/a4j"
+ xmlns:rich="http://richfaces.org/rich">>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="file.css"/>
+	
+	<title>Insert title here</title>
+</h:head>
+<h:body>
+
+	<h:form id="formInvestimentos"> 
+		<h1> INVESTIMENTOS </h1>
+		<div class="card">
+			<p:dataTable value="#{beanInvest.investimentos}" var="inves" border="1" id="listaInvestimentos">
+				<p:column headerText="Nome">
+					<h:outputText value="#{inves.nome}"/>
+				</p:column>
+				
+				<p:column headerText="Objetivo">
+					<h:outputText value="#{inves.objetivo}"/>
+				</p:column>
+				
+				<p:column headerText="Saldo Total">
+					<h:outputText value="#{inves.saldoTotal}">
+					 <s:convertNumber maxFractionDigits="2" currencyCode="BRL" type="currency" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Ações" width="100">
+					<p:commandLink value="Selecionar" disabled="#{inves.indicadorDeCarencia eq 'S'}" action="#{beanInvest.selecionar(inves)}"/>
+				</p:column>
+			</p:dataTable>
+		</div>
+	</h:form>
+
+</h:body>
+</html>
