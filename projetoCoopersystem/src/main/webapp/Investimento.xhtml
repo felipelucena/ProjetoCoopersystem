@@ -7,7 +7,7 @@
  xmlns:f="http://xmlns.jcp.org/jsf/facelets"
  xmlns:p="http://primefaces.org/ui"
   xmlns:a4j="http://richfaces.org/a4j"
- xmlns:rich="http://richfaces.org/rich">>
+ xmlns:rich="http://richfaces.org/rich">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<h:outputStylesheet library="css" name="file.css"/>
@@ -35,7 +35,7 @@
 				</p:column>
 				
 				<p:column headerText="Ações" width="100">
-					<p:commandLink value="Selecionar" disabled="#{inves.indicadorDeCarencia eq 'S'}" action="#{beanInvest.selecionar(inves)}"/>
+					<p:commandButton value="Selecionar" disabled="#{inves.indicadorDeCarencia eq 'S'}" action="#{beanInvest.selecionar(inves)}"/>
 				</p:column>
 			</p:dataTable>
 		</div>

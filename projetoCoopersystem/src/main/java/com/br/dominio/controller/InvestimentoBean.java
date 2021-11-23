@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.codehaus.jettison.json.JSONException;
+import javax.faces.bean.ViewScoped;
 
 import com.br.dominio.model.Investimento;
 import com.br.dominio.util.ApplicationMapUtil;
@@ -18,7 +18,7 @@ import com.br.dominio.util.LeitorJsonUtil;
 import com.google.gson.JsonSyntaxException;
 
 @Named("beanInvest")
-@RequestScoped
+@ViewScoped
 public class InvestimentoBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;

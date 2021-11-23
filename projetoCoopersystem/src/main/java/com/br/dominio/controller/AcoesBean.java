@@ -8,21 +8,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.jboss.weld.context.RequestContext;
-import org.omnifaces.util.Ajax;
-import org.primefaces.context.PrimeRequestContext;
 
 import com.br.dominio.model.Acao;
 import com.br.dominio.model.Investimento;
 import com.br.dominio.util.ApplicationMapUtil;
 
 @Named("acoesBean")
-@ViewScoped
+@RequestScoped
 public class AcoesBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;

@@ -86,4 +86,5 @@ public class LeitorJsonUtil {
 		 acao.setPercentual( (Double) Double.parseDouble(jsonObject.get("percentual").toString()));
 		 return acao;
 	 }
+	 
 }
