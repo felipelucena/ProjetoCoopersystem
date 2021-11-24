@@ -3,96 +3,109 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
  xmlns:h="http://xmlns.jcp.org/jsf/html"
  xmlns:ui="http://xmlns.jcp.org/jsf/core"
- xmlns:a="http://xmlns.jcp.org/jsf/facelets"
- xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:s="http://java.sun.com/jsf/core"
+ xmlns:f="http://xmlns.jcp.org/jsf/facelets"
  xmlns:p="http://primefaces.org/ui"
- xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:a4j="http://richfaces.org/a4j"
  xmlns:rich="http://richfaces.org/rich">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<h:outputStylesheet library="css" name="file.css"/>
+	
+	<title>Insert title here</title>
 </h:head>
 <h:body>
-		<h:form id="dadosInvestimento">
-			<h1>DADOS DO INVESTIMENTOS</h1>
-			<h:panelGroup columns="6">
-				<p:inputText label="Nome" value="#{acoesBean.investimento.nome}"
-					disabled="true" />
-				<p:inputText label="Objetivo"
-					value="#{acoesBean.investimento.objetivo}" disabled="true" />
-				<p:inputText label="Saldo" value="#{acoesBean.investimento.saldoTotal}" disabled="true">					 <f:convertNumber maxFractionDigits="2" currencyCode="BRL" type="currency" />
-					</p:inputText>
-			</h:panelGroup>
-		</h:form>
+	<h:form id="dadosInvestimento">
+		<h1>DADOS DO INVESTIMENTOS</h1>
+		<h:panelGroup columns="3">
+			<p:inputText label="Nome" value="#{acoesBean.investimento.nome}"
+				disabled="true" />
+			<p:inputText label="Objetivo"
+				value="#{acoesBean.investimento.objetivo}" disabled="true" />
+			<p:inputText label="Saldo"
+				value="#{acoesBean.investimento.saldoTotal}" disabled="true">
+				<s:convertNumber currencySymbol="R$" maxFractionDigits="2"
+					currencyCode="BRL" type="currency" />
+			</p:inputText>
+		</h:panelGroup>
+	</h:form>
 
 	<h:form id="listaAcao">
 		<h1>RESGATE</h1>
 		<div class="card">
 			<p:dataTable value="#{acoesBean.carregarListaResgate()}" var="acao"
 				border="1">
-				<p:column headerText="ACAO">
+				<p:column headerText="AÇÃO">
 					<p:outputLabel value="#{acao.nome}" />
 				</p:column>
 
 				<p:column headerText="SALDO ACUMULADO">
 					<p:outputLabel value="#{acao.saldoAcumulado}">
-						<f:convertNumber maxFractionDigits="2" currencyCode="BRL"
+						<s:convertNumber maxFractionDigits="2" currencyCode="BRL"
 							type="currency" />
 					</p:outputLabel>
 				</p:column>
 
 				<p:column headerText="VALOR A RESGATAR">
-					<p:inputText value="#{acao.valorResgatado}">
-						<f:convertNumber pattern="#,##0.00"></f:convertNumber>
+				R$
+					<p:inputText value="#{acao.valorResgatado}"
+						converterMessage="Campo Capacidade é Numérico.">
+						<s:convertNumber pattern="#,##0.00" integerOnly="true" />
 						<a4j:ajax execute="@this" render="@form" event="blur"
 							listener="#{acoesBean.calculaSaldoTotal()}" />
 					</p:inputText>
 				</p:column>
 
 			</p:dataTable>
-			<p:outputLabel label="teeeste"  value="#{acoesBean.saldoTotal}">
-				<f:convertNumber maxFractionDigits="2" currencyCode="BRL"
+			<h3>Valor total do resgate: </h3>
+			<p:outputLabel value="#{acoesBean.saldoTotal}">
+				<s:convertNumber maxFractionDigits="2" currencyCode="BRL"
 					type="currency" />
 			</p:outputLabel>
 		</div>
-						<h:panelGrid style="position: absolute; right: 0;" columns="2">
-							<p:commandButton  value="Confirmar Resgate">
-							 <rich:componentControl target="popup" operation="show" />
-							</p:commandButton>
-							<p:commandButton value="Cancelar" action="/Investimento.xhtml" />
-						</h:panelGrid>
-	</h:form>
-	
-	<rich:popupPanel id="popup" modal="false" minHeight="40" width="500" height="200" showEffect="fade" resizeable="false">
-	        <f:facet name="header">
-	            <h:outputText value="Simple popup panel" />
-	        </f:facet>
-	        <p:dataTable value="#{acoesBean.validaConcluir()}" var="acao" border="2">
-							<p:column headerText="DADOS INVÁLIDOS!">
-								<h:outputText
-									value="#{acao.nome} : O valor a resgatar não pode ser maior que #{acao.saldoAcumulado}" />
-							</p:column>
+
+		<h:panelGrid style="position: absolute; right: 0;" columns="2">
+			<p:commandButton value="Confirmar Resgate">
+				<a4j:ajax event="click" execute="popup" />
+				<rich:componentControl target="popup" operation="show" />
+			</p:commandButton>
+			<p:commandButton value="Cancelar" action="/Investimento.xhtml" />
+		</h:panelGrid>
+
+
+		<rich:popupPanel id="popup" modal="false" width="400" height="200"
+			resizeable="false">
+			<p:dataTable value="#{acoesBean.acaoAcimaValorPermitido}" var="acao"
+				rendered="#{acoesBean.acaoAcimaValorPermitido.size() ne 0}">
+				<p:column headerText="Você preencheu um ou mais campos com valor acima do permitido:" >
+					<h:outputText
+						value="#{acao.nome} : O valor a resgatar não pode ser maior que #{acao.saldoAcumulado}" />
+				</p:column>
 			</p:dataTable>
-							<p:commandButton type="button" onclick="#{rich:component('popup')}.hide(); return false;"
-								value="CORRIGIR" styleClass="ui-button-flat p-mr-2"
-								style="width: 7rem" />
-    </rich:popupPanel>
-		
-		<p:dialog widgetVar="dadosInvalidos" onHide="" id="dados" 
-					minHeight="40" width="500" height="200" showEffect="fade">
-					<p class="p-m-1">Você preencheu um ou mais campos com um valor
-						acima do premitido:</p>
-					<p:dataTable value="#{acoesBean.validaConcluir()}" var="acao" border="2">
-						<p:column headerText="DADOS INVÁLIDOS!">
-						<h:outputText
-							value="#{acao.nome} : O valor a resgatar não pode ser maior que #{acao.saldoAcumulado}" />
-							</p:column>
-					</p:dataTable>
-					<f:facet name="footer">
-						<p:commandButton type="button" onclick="PF('dadosInvalidos').hide()"
-							value="CORRIGIR" styleClass="ui-button-flat p-mr-2"
-							style="width: 7rem" />
-					</f:facet>
-		</p:dialog>
+			<p:commandButton type="button"
+				rendered="#{acoesBean.acaoAcimaValorPermitido.size() ne 0}"
+				onclick="#{rich:component('popup')}.hide(); return false;"
+				value="CORRIGIR" styleClass="ui-button-flat p-mr-2"
+				style="width: 7rem" />
+			<h:panelGrid>
+				<p:outputLabel rendered="#{acoesBean.validaValResgatarVazios}"
+					value="Favor preencher pelo menos um dos campos de valor a resgatar." />
+				<p:commandButton rendered="#{acoesBean.validaValResgatarVazios}"
+					onclick="#{rich:component('popup')}.hide(); return false;"
+					value="CORRIGIR" />
+			</h:panelGrid>
+			<h:panelGrid rendered="#{!acoesBean.validaValResgatarVazios}">
+				<p:outputLabel
+					rendered="#{acoesBean.acaoAcimaValorPermitido.size() eq 0}"
+					value="O resgate foi efetuado com sucesso!" />
+				<p:button
+					rendered="#{acoesBean.acaoAcimaValorPermitido.size() eq 0}"
+					action="/Investimento.xhtml"
+					onclick="#{rich:component('popup')}.hide(); return false;"
+					value="NOVO RESGATE" />
+			</h:panelGrid>
+		</rich:popupPanel>
+	</h:form>
+
 </h:body>
 </html>

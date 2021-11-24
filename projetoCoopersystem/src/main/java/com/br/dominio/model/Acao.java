@@ -1,19 +1,17 @@
 package com.br.dominio.model;
 
-import java.beans.Transient;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 public class Acao implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	
+
 	private long id;
 	private String nome;
 	private Double percentual;
-	
+
 	private Double saldoAcumulado;
-	
+
 	private Double valorResgatado;
 
 	public long getId() {
@@ -39,8 +37,7 @@ public class Acao implements Serializable{
 	public void setPercentual(Double percentual) {
 		this.percentual = percentual;
 	}
-	
-	
+
 	public Double getSaldoAcumulado() {
 		return saldoAcumulado;
 	}
@@ -78,6 +75,5 @@ public class Acao implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
+
 }
